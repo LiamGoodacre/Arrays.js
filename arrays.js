@@ -54,10 +54,10 @@
 			}, u);
 		});
 
-		//+ (a -> b -> b) -> b -> [a] -> b
+		//+ (b -> a -> b) -> b -> [a] -> b
 		Arrays.foldr = autopoly(function(f, u, xs) {
 			return xs.reduceRight(function(acc, val) {
-				return f(val, acc);
+				return f(acc, val);
 			}, u);
 		});
 
