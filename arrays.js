@@ -74,11 +74,11 @@
 		Arrays.tail = Arrays.drop(1);
 
 		Arrays.foldl1 = autopoly(function(f, xs) {
-			return Arrays.foldl(f, xs[0], Arrays.slice(1));
+			return Arrays.foldl(f, xs[0], Arrays.tail(xs));
 		});
 
 		Arrays.foldr1 = autopoly(function(f, xs) {
-			return Arrays.foldr(f, xs[0], Arrays.slice(1));
+			return Arrays.foldr(f, xs[0], Arrays.tail(xs));
 		});
 
 		//+ [[a]] -> [a]
