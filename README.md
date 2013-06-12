@@ -167,11 +167,11 @@ Returns truthy if at least one element in an array satisfies some predicate.
 Falsy otherwise.
 
 ```js
-Arrays.some(function (v) { return v > 4; }, [])
 Arrays.some(function (v) { return v > 4; }, [5, 7, 9])
 Arrays.some(function (v) { return v > 4; }, [6, 1, 5])
 //= true
 
+Arrays.some(function (v) { return v > 4; }, [])
 Arrays.some(function (v) { return v > 4; }, [2, 1, 3])
 //= false
 ```
