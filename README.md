@@ -67,7 +67,7 @@ Arrays.bind(sqrt, [1, 4, 9, 0, -42])
 Appends an array of arrays together:
 
 ```js
-Arrays.concat([[1, 2], [3, 4], [[5], [6, 7]]]);
+Arrays.concat([[1, 2], [3, 4], [[5], [6, 7]]])
 //= [1, 2, 3, 4, [5], [6, 7]]
 ```
 
@@ -109,11 +109,44 @@ Arrays.drop(2, [1, 2, 3, 4])
 
 ### Arrays.range : Num &rarr; Num &rarr; [Num]
 
+Computes a range given a `start` and an `end`:
+
+```js
+Arrays.range(3, 8)
+//= [3, 4, 5, 6, 7]
+
+Arrays.range(10, 1)
+Arrays.range(0, Infinity)
+Arrays.range(-Infinity, 0)
+//= []
+```
+
 
 ### Arrays.slice : Num &rarr; Num &rarr; [a] &rarr; [a]
 
+Given a starting index `s`, an ending index `e`, and an array `a`, drop `s` and take `e - s`:
+
+```js
+Arrays.slice(2, 5, [1, 2, 3, 4, 5, 6, 7])
+//= [3, 4, 5]
+```
+
 
 ### Arrays.stepRange : Num &rarr; Num &rarr; Num &rarr; [Num]
+
+Computes a range given an `interval step`, a `start` and an `end`:
+
+```js
+Arrays.stepRange(0.5, 3, 8)
+//= [3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5]
+
+Arrays.stepRange(0, 1, 10)
+Arrays.stepRange(2, 10, 5)
+Arrays.stepRange(1, 0, Infinity)
+Arrays.stepRange(0, -Infinity, 0)
+Arrays.stepRange(-1, 0, 5)
+//= []
+```
 
 
 ### Arrays.tail : [a] &rarr; [a]

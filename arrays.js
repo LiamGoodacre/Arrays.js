@@ -23,7 +23,8 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-;(function(define) {
+;
+(function(define) {
 
 	define(['Kurry'], function Arrays(Kurry) {
 
@@ -37,7 +38,9 @@
 				console.error(errorMessage);
 			}
 
-			return { error: new Error(errorMessage) };
+			return {
+				error: new Error(errorMessage)
+			};
 		}
 
 		var autopoly = Kurry.autopoly;
@@ -132,9 +135,13 @@
 		//+ Num -> Num -> Num -> [Num]
 		Arrays.stepRange = autopoly(function(interval, start, end) {
 			var result = [];
-			for (; start < end && end !== Infinity && interval > 0; start += interval) {
-				result.push(start);
+
+			if ((start !== -Infinity) && (end !== Infinity) && (interval > 0)) {
+				for (; start < end; start += interval) {
+					result.push(start);
+				}
 			}
+
 			return result;
 		});
 
@@ -148,5 +155,7 @@
 	module.exports = f.apply(this, ds.map(require));
 } : function(ds, f) {
 	var self = this;
-	self[f.name] = f.apply(self, ds.map(function (d) { return self[d]; }));
+	self[f.name] = f.apply(self, ds.map(function(d) {
+		return self[d];
+	}));
 });
