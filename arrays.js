@@ -148,6 +148,22 @@
 		//+ Num -> Num -> [Num]
 		Arrays.range = Arrays.stepRange(1);
 
+		//+ (a -> Bool) -> [a] -> Bool
+		Arrays.some = autopoly(function(pred, xs) {
+			var result = false;
+			for (var i = 0, l = xs.length; !result && i < l; i += 1) {
+				result = pred(xs[i]); }
+			return result;
+		});
+
+		//+ (a -> Bool) -> [a] -> Bool
+		Arrays.all = autopoly(function(pred, xs) {
+			var result = true;
+			for (var i = 0, l = xs.length; result && i < l; i += 1) {
+				result = pred(xs[i]); }
+			return result;
+		});
+
 		return Arrays;
 	});
 

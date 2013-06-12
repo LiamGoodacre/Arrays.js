@@ -9,6 +9,21 @@ All functions are wrapped with `Kurry.autopoly`.
 
 # Documentation (unfinished)
 
+### Arrays.all : (a &rarr; Bool) &rarr; [a] &rarr; Bool
+
+Returns truthy if all elements in an array satisfy some predicate.
+Falsy otherwise.
+
+```js
+Arrays.all(function (v) { return v > 4; }, [])
+Arrays.all(function (v) { return v > 4; }, [5, 7, 9])
+//= true
+
+Arrays.all(function (v) { return v > 4; }, [6, 1, 5])
+//= false
+```
+
+
 ### Arrays.append : [a] &rarr; [a] &rarr; [a]
 
 Appends two arrays together:
@@ -143,6 +158,22 @@ Given a starting index `s`, an ending index `e`, and an array `a`, drop `s` and 
 ```js
 Arrays.slice(2, 5, [1, 2, 3, 4, 5, 6, 7])
 //= [3, 4, 5]
+```
+
+
+### Arrays.some : (a &rarr; Bool) &rarr; [a] &rarr; Bool
+
+Returns truthy if at least one element in an array satisfies some predicate.
+Falsy otherwise.
+
+```js
+Arrays.some(function (v) { return v > 4; }, [])
+Arrays.some(function (v) { return v > 4; }, [5, 7, 9])
+Arrays.some(function (v) { return v > 4; }, [6, 1, 5])
+//= true
+
+Arrays.some(function (v) { return v > 4; }, [2, 1, 3])
+//= false
 ```
 
 
