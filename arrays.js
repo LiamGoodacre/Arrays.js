@@ -61,22 +61,28 @@
 			}, u);
 		});
 
+		//+ Num -> Num -> [a]
 		Arrays.slice = autopoly(function(s, e, xs) {
 			return xs.slice(s, e);
 		});
 
+		//+ Num -> Num -> [a]
 		Arrays.drop = autopoly(function(n, xs) {
 			return xs.slice(n);
 		});
 
+		//+ Num -> [a]
 		Arrays.take = Arrays.slice(0);
 
+		//+ Num -> [a]
 		Arrays.tail = Arrays.drop(1);
 
+		//+ (a -> a -> a) -> [a] -> a
 		Arrays.foldl1 = autopoly(function(f, xs) {
 			return Arrays.foldl(f, xs[0], Arrays.tail(xs));
 		});
 
+		//+ (a -> a -> a) -> [a] -> a
 		Arrays.foldr1 = autopoly(function(f, xs) {
 			return Arrays.foldr(f, xs[0], Arrays.tail(xs));
 		});
@@ -106,6 +112,11 @@
 		//+ [a] -> (a -> [b]) -> [b]
 		Arrays.bind = autopoly(function(ma, f) {
 			return Arrays.concat(Arrays.lift(f, ma));
+		});
+
+		//+ (a -> [b]) -> [a] -> [b]
+		Arrays.bindOn = autopoly(function(f, ma) {
+			return Arrays.bind(ma, f);
 		});
 
 		//+ [* -> [*]] -> [*] -> [*]
