@@ -93,7 +93,7 @@
 		//+ [[a]] -> [a]
 		Arrays.concat = Arrays.foldl(Arrays.append, []);
 
-		//+ (a -> Num -> b) -> [a] -> [b]
+		//+ ((a, Num) -> b) -> [a] -> [b]
 		Arrays.mapIndexed = autopoly(function(f, xs) {
 			return xs.map(function(v, i) {
 				return f(v, i);
