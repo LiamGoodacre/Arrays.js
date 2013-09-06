@@ -166,7 +166,7 @@ Arrays.lift(function (v) { return v * 10 }, [0, 1, 2, 3, 4])
 ```
 
 
-### Arrays.mapIndexed : (a &rarr; Num &rarr; b) &rarr; [a] &rarr; [b]
+### Arrays.mapIndexed : ((a, Num) &rarr; b) &rarr; [a] &rarr; [b]
 
 Apply a function to every element + index pair in the array.  The result is an array of the output of each call:
 
