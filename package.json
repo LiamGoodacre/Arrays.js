@@ -1,19 +1,19 @@
 {
   "name": "kurry-arrays",
-  "description": "a small collection of functions for dealing with JavaScript arrays",
+  "description": "A small collection of functions for dealing with JavaScript arrays",
   "main": "./arrays.js",
   "author": "Liam Goodacre",
   "version": "0.0.1",
   "repository": {
     "type": "git",
-    "url": "https://github.com/LiamGoodacre/Arrays.js"
+    "url": "https://github.com/LiamGoodacre/Kurry-Arrays"
   },
   "bugs": {
-    "url": "https://github.com/LiamGoodacre/Arrays.js/issues"
+    "url": "https://github.com/LiamGoodacre/Kurry-Arrays/issues"
   },
   "licenses": [{
     "type": "MIT",
-    "url": "https://github.com/LiamGoodacre/Arrays.js/raw/master/LICENSE.txt"
+    "url": "https://github.com/LiamGoodacre/Kurry-Arrays/raw/master/LICENSE.txt"
   }],
   "dependencies": {
     "kurry": "0.0.x"

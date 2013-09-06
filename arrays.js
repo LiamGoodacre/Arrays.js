@@ -1,5 +1,5 @@
 /*!
- * Arrays.js
+ * Kurry-Arrays
  *
  * Copyright 2013 Liam Goodacre
  *
@@ -28,7 +28,7 @@
   define(['Kurry'], function (Kurry) {
 
     if (!Kurry || !Kurry.autopoly) {
-      throw new Error('Arrays.js not initialized; could not find Kurry.js');
+      throw new Error('Kurry-Arrays not initialized; could not find Kurry.js');
     }
 
     var Arrays = {};
