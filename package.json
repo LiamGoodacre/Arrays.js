@@ -3,7 +3,7 @@
   "description": "A small collection of functions for dealing with JavaScript arrays",
   "main": "./arrays.js",
   "author": "Liam Goodacre",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "repository": {
     "type": "git",
     "url": "https://github.com/LiamGoodacre/Kurry-Arrays"
