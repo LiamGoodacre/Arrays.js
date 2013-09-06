@@ -73,7 +73,7 @@ var sqrt = function (v) {
     );
 };
 
-Arrays.bind(sqrt, [1, 4, 9, 0, -42])
+Arrays.bindOn(sqrt, [1, 4, 9, 0, -42])
 //= [1, -1, 2, -2, 3, -3, 0]
 ```
 
@@ -144,17 +144,81 @@ product([])
 ```
 
 
-### Arrays.foldlBind
+### Arrays.foldlBind : [* &rarr; [*]] &rarr; [*] &rarr; [*]
+
+Folded monadic bind, for sequencing binds.
+
+```js
+var f = function (x) { return [x * 10, x * x] }
+var g = function (x) { return [-x, x] }
+Arrays.foldlBind([f, g], [1, 2])
+//= foldlBind([g], [10, 1, 20, 4])
+//= foldlBind([], [-10, 10, -1, 1, -20, 20, -4, 4])
+//= [-10, 10, -1, 1, -20, 20, -4, 4]
+```
 
 
 ### Arrays.foldr : (b &rarr; a &rarr; b) &rarr; b &rarr; [a] &rarr; b
 
+Same as foldl except folds from the right instead of the left.
+
+Given a binary function `bin : b -> a -> b` and an initial accumulator
+value `acc : b`, from the right of the array fold together each element
+with the current accumulator, the result is the new accumulator.
+
+```js
+var add = function (a, b) { return a + b }
+var sum = Arrays.foldr(add, 0)
+sum([1, 2, 3, 4, 5])
+//= foldr(+, 0, [1,2,3,4,5])
+//= foldr(+, (5+0), [1,2,3,4])
+//= foldr(+, (4+5+0), [1,2,3])
+//= foldr(+, (3+4+5+0), [1,2])
+//= foldr(+, (2+3+4+5+0), [1])
+//= foldr(+, (1+2+3+4+5+0), [])
+//= (1+2+3+4+5+0)
+//= 15
+```
 
 
 ### Arrays.foldr1
 
+Same as foldr, except the last value of the array is taken to be the
+initial accumulator value.
+
+```js
+var multiply = function (a, b) { return a * b }
+var product = Arrays.foldr1(multiply)
+
+product([5, 4, 3])
+//=foldr1(*, [5, 4, 3])
+//=foldr(*, 3, [5, 4])
+//=foldr(*, (4*3), [5])
+//=foldr(*, (5*4*3), [])
+//=(5*4*3)
+//=60
+
+product([])
+//=foldr1(*, [])
+//=foldr(*, undefined, [])
+//=undefined
+```
+
 
 ### Arrays.foldrBind
+
+Same as foldlBind, except folds from the right instead of the left.
+
+Folded monadic bind, for sequencing binds.
+
+```js
+var f = function (x) { return [x * 10, x * x] }
+var g = function (x) { return [-x, x] }
+Arrays.foldrBind([f, g], [1, 2])
+//= foldrBind([f], [-1, 1, -2, 2])
+//= foldrBind([], [-10, 1, 10, 1, -20, 4, 20, 4])
+//= [-10, 1, 10, 1, -20, 4, 20, 4]
+```
 
 
 ### Arrays.lift : (a &rarr; b) &rarr; [a] &rarr; [b]
@@ -266,5 +330,3 @@ Monadic unit (return):
 Arrays.unit(5)
 //= [5]
 ```
-
-
