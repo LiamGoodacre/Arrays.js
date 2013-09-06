@@ -1,4 +1,4 @@
-/*
+/*!
  * Arrays.js
  *
  * Copyright 2013 Liam Goodacre
@@ -23,155 +23,146 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-;
 (function(define) {
 
-	define(['Kurry'], function Arrays(Kurry) {
+  define(['Kurry'], function (Kurry) {
 
-		var Arrays = {};
-		var polyAvailable = (typeof Kurry !== 'undefined') && Kurry.autopoly;
+    if (!Kurry || !Kurry.autopoly) {
+      throw new Error('Arrays.js not initialized; could not find Kurry.js');
+    }
 
-		if (!polyAvailable) {
-			var errorMessage = 'Arrays.js not initialized; could not find Kurry.js';
+    var Arrays = {};
 
-			if (typeof console !== 'undefined' && console.error) {
-				console.error(errorMessage);
-			}
+    var autopoly = Kurry.autopoly;
+    var concat = Function.apply.bind([].concat, []);
 
-			return {
-				error: new Error(errorMessage)
-			};
-		}
+    //+ [a] -> [a] -> [a]
+    Arrays.append = autopoly(function(xs, ys) {
+      return concat([xs, ys]);
+    });
 
-		var autopoly = Kurry.autopoly;
+    //+ (b -> a -> b) -> b -> [a] -> b
+    Arrays.foldl = autopoly(function(f, u, xs) {
+      return xs.reduce(function(acc, val) {
+        return f(acc, val);
+      }, u);
+    });
 
-		//+ [a] -> [a] -> [a]
-		Arrays.append = autopoly(function(xs, ys) {
-			return [].concat(xs).concat(ys);
-		});
+    //+ (b -> a -> b) -> b -> [a] -> b
+    Arrays.foldr = autopoly(function(f, u, xs) {
+      return xs.reduceRight(function(acc, val) {
+        return f(acc, val);
+      }, u);
+    });
 
-		//+ (b -> a -> b) -> b -> [a] -> b
-		Arrays.foldl = autopoly(function(f, u, xs) {
-			return xs.reduce(function(acc, val) {
-				return f(acc, val);
-			}, u);
-		});
+    //+ Num -> Num -> [a]
+    Arrays.slice = autopoly(function(s, e, xs) {
+      return xs.slice(s, e);
+    });
 
-		//+ (b -> a -> b) -> b -> [a] -> b
-		Arrays.foldr = autopoly(function(f, u, xs) {
-			return xs.reduceRight(function(acc, val) {
-				return f(acc, val);
-			}, u);
-		});
+    //+ Num -> Num -> [a]
+    Arrays.drop = autopoly(function(n, xs) {
+      return xs.slice(n);
+    });
 
-		//+ Num -> Num -> [a]
-		Arrays.slice = autopoly(function(s, e, xs) {
-			return xs.slice(s, e);
-		});
+    //+ Num -> [a]
+    Arrays.take = Arrays.slice(0);
 
-		//+ Num -> Num -> [a]
-		Arrays.drop = autopoly(function(n, xs) {
-			return xs.slice(n);
-		});
+    //+ Num -> [a]
+    Arrays.tail = Arrays.drop(1);
 
-		//+ Num -> [a]
-		Arrays.take = Arrays.slice(0);
+    //+ (a -> a -> a) -> [a] -> a
+    Arrays.foldl1 = autopoly(function(f, xs) {
+      return Arrays.foldl(f, xs[0], Arrays.tail(xs));
+    });
 
-		//+ Num -> [a]
-		Arrays.tail = Arrays.drop(1);
+    //+ (a -> a -> a) -> [a] -> a
+    Arrays.foldr1 = autopoly(function(f, xs) {
+      return Arrays.foldr(f, xs[0], Arrays.tail(xs));
+    });
 
-		//+ (a -> a -> a) -> [a] -> a
-		Arrays.foldl1 = autopoly(function(f, xs) {
-			return Arrays.foldl(f, xs[0], Arrays.tail(xs));
-		});
+    //+ [[a]] -> [a]
+    Arrays.concat = Arrays.foldl(Arrays.append, []);
 
-		//+ (a -> a -> a) -> [a] -> a
-		Arrays.foldr1 = autopoly(function(f, xs) {
-			return Arrays.foldr(f, xs[0], Arrays.tail(xs));
-		});
+    //+ (a -> Num -> b) -> [a] -> [b]
+    Arrays.mapIndexed = autopoly(function(f, xs) {
+      return xs.map(function(v, i) {
+        return f(v, i);
+      });
+    });
 
-		//+ [[a]] -> [a]
-		Arrays.concat = Arrays.foldl(Arrays.append, []);
+    //+ (a -> b) -> [a] -> [b]
+    Arrays.lift = autopoly(function(f, xs) {
+      return xs.map(function(v) {
+        return f(v);
+      });
+    });
 
-		//+ (a -> Num -> b) -> [a] -> [b]
-		Arrays.mapIndexed = autopoly(function(f, xs) {
-			return xs.map(function(v, i) {
-				return f(v, i);
-			});
-		});
+    //+ a -> [a]
+    Arrays.unit = function(v) {
+      return [v];
+    };
 
-		//+ (a -> b) -> [a] -> [b]
-		Arrays.lift = autopoly(function(f, xs) {
-			return xs.map(function(v) {
-				return f(v);
-			});
-		});
+    //+ [a] -> (a -> [b]) -> [b]
+    Arrays.bind = autopoly(function(ma, f) {
+      return Arrays.concat(Arrays.lift(f, ma));
+    });
 
-		//+ a -> [a]
-		Arrays.unit = function(v) {
-			return [v];
-		};
+    //+ (a -> [b]) -> [a] -> [b]
+    Arrays.bindOn = autopoly(function(f, ma) {
+      return Arrays.bind(ma, f);
+    });
 
-		//+ [a] -> (a -> [b]) -> [b]
-		Arrays.bind = autopoly(function(ma, f) {
-			return Arrays.concat(Arrays.lift(f, ma));
-		});
+    //+ [* -> [*]] -> [*] -> [*]
+    Arrays.foldlBind = autopoly(function(fs, xs) {
+      return Arrays.foldl(Arrays.bind, xs, fs);
+    });
 
-		//+ (a -> [b]) -> [a] -> [b]
-		Arrays.bindOn = autopoly(function(f, ma) {
-			return Arrays.bind(ma, f);
-		});
+    //+ [* -> [*]] -> [*] -> [*]
+    Arrays.foldrBind = autopoly(function(fs, xs) {
+      return Arrays.foldr(Arrays.bind, xs, fs);
+    });
 
-		//+ [* -> [*]] -> [*] -> [*]
-		Arrays.foldlBind = autopoly(function(fs, xs) {
-			return Arrays.foldl(Arrays.bind, xs, fs);
-		});
+    //+ Num -> Num -> Num -> [Num]
+    Arrays.stepRange = autopoly(function(interval, start, end) {
+      var result = [];
 
-		//+ [* -> [*]] -> [*] -> [*]
-		Arrays.foldrBind = autopoly(function(fs, xs) {
-			return Arrays.foldr(Arrays.bind, xs, fs);
-		});
+      if ((start !== -Infinity) && (end !== Infinity) && (interval > 0)) {
+        for (; start < end; start += interval) {
+          result.push(start);
+        }
+      }
 
-		//+ Num -> Num -> Num -> [Num]
-		Arrays.stepRange = autopoly(function(interval, start, end) {
-			var result = [];
+      return result;
+    });
 
-			if ((start !== -Infinity) && (end !== Infinity) && (interval > 0)) {
-				for (; start < end; start += interval) {
-					result.push(start);
-				}
-			}
+    //+ Num -> Num -> [Num]
+    Arrays.range = Arrays.stepRange(1);
 
-			return result;
-		});
+    //+ (a -> Bool) -> [a] -> Bool
+    Arrays.some = autopoly(function(pred, xs) {
+      var result = false;
+      for (var i = 0, l = xs.length; !result && i < l; i += 1) {
+        result = pred(xs[i]); }
+      return result;
+    });
 
-		//+ Num -> Num -> [Num]
-		Arrays.range = Arrays.stepRange(1);
+    //+ (a -> Bool) -> [a] -> Bool
+    Arrays.all = autopoly(function(pred, xs) {
+      var result = true;
+      for (var i = 0, l = xs.length; result && i < l; i += 1) {
+        result = pred(xs[i]); }
+      return result;
+    });
 
-		//+ (a -> Bool) -> [a] -> Bool
-		Arrays.some = autopoly(function(pred, xs) {
-			var result = false;
-			for (var i = 0, l = xs.length; !result && i < l; i += 1) {
-				result = pred(xs[i]); }
-			return result;
-		});
+    return Arrays;
+  });
 
-		//+ (a -> Bool) -> [a] -> Bool
-		Arrays.all = autopoly(function(pred, xs) {
-			var result = true;
-			for (var i = 0, l = xs.length; result && i < l; i += 1) {
-				result = pred(xs[i]); }
-			return result;
-		});
-
-		return Arrays;
-	});
-
-})(typeof define == "function" ? define : typeof exports == "object" ? function(ds, f) {
-	module.exports = f.apply(this, ds.map(require));
+})(typeof define == 'function' ? define : typeof exports == 'object' ? function(ds, f) {
+  module.exports = f.apply(this, ds.map(require));
 } : function(ds, f) {
-	var self = this;
-	self[f.name] = f.apply(self, ds.map(function(d) {
-		return self[d];
-	}));
+  var self = this;
+  self[f.name] = f.apply(self, ds.map(function(d) {
+    return self[d];
+  }));
 });

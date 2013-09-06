@@ -89,7 +89,8 @@ Arrays.concat([[1, 2], [3, 4], [[5], [6, 7]]])
 
 ### Arrays.drop : Num &rarr; [a] &rarr; [a]
 
-Returns an array that is the array passed in with a number of elements removed from the beginning.
+Returns an array that is the array passed in with a number of elements
+removed from the beginning.
 
 ```js
 Arrays.drop(2, [1, 2, 3, 4])
@@ -99,8 +100,47 @@ Arrays.drop(2, [1, 2, 3, 4])
 
 ### Arrays.foldl : (b &rarr; a &rarr; b) &rarr; b &rarr; [a] &rarr; b
 
+Given a binary function `bin : b -> a -> b` and an initial accumulator
+value `acc : b`, from the left of the array fold together each element
+with the current accumulator, the result is the new accumulator.
+
+```js
+var add = function (a, b) { return a + b }
+var sum = Arrays.foldl(add, 0)
+sum([1, 2, 3, 4, 5])
+//= foldl(+, 0, [1,2,3,4,5])
+//= foldl(+, (0+1), [2,3,4,5])
+//= foldl(+, (0+1+2), [3,4,5])
+//= foldl(+, (0+1+2+3), [4,5])
+//= foldl(+, (0+1+2+3+4), [5])
+//= foldl(+, (0+1+2+3+4+5), [])
+//= (0+1+2+3+4+5)
+//= 15
+```
+
 
 ### Arrays.foldl1
+
+Same as foldl, except the first value of the array is taken to be the
+initial accumulator value.
+
+```js
+var multiply = function (a, b) { return a * b }
+var product = Arrays.foldl1(multiply)
+
+product([5, 4, 3])
+//=foldl1(*, [5, 4, 3])
+//=foldl(*, 5, [4, 3])
+//=foldl(*, (5*4), [3])
+//=foldl(*, (5*4*3), [])
+//=(5*4*3)
+//=60
+
+product([])
+//=foldl1(*, [])
+//=foldl(*, undefined, [])
+//=undefined
+```
 
 
 ### Arrays.foldlBind
