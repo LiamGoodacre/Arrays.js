@@ -1,6 +1,6 @@
-# Arrays.js
+# Kurry-Arrays
 
-Kurry-Arrays.js is a JavaScript library providing a small collection of functions
+Kurry-Arrays is a JavaScript library providing a small collection of functions
 for the purpose of creating, transforming, and processing regular JavaScript arrays.
 
 This library explicitly depends on [Kurry.js](https://github.com/LiamGoodacre/Kurry).
