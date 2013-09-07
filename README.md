@@ -25,6 +25,22 @@ _f(2, 3)(4) //# Error, number is not a function
 ```
 
 
+### Arrays.isArray : a -> Bool
+
+Given a value, returns true is it is an array.
+
+```js
+Arrays.isArray({})
+//= false
+
+Arrays.isArray([]])
+//= true
+
+Arrays.isArray(arguments)
+//= false
+```
+
+
 ### Arrays.all : (a &rarr; Bool) &rarr; [a] &rarr; Bool
 
 Returns truthy if all elements in an array satisfy some predicate.
