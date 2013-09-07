@@ -3,12 +3,27 @@
 Kurry-Arrays is a JavaScript library providing a small collection of functions
 for the purpose of creating, transforming, and processing regular JavaScript arrays.
 
+
+# Documentation (work in progress)
+
 This library explicitly depends on [Kurry.js](https://github.com/LiamGoodacre/Kurry).
 
 All functions are wrapped with `Kurry.autopoly`.
+The following is an example of what this means:
 
+```js
+var _f = function (a, b, c) { return a+b+c }
+var f = Kurry.autopoly(_f)
 
-# Documentation (unfinished)
+_f(2, 3, 4) //= 9
+f(2, 3, 4) //= 9
+f(2, 3)(4) //= 9
+f(2)(3)(4) //= 9
+f(2)(3, 4) //= 9
+
+_f(2, 3)(4) //# Error, number is not a function
+```
+
 
 ### Arrays.all : (a &rarr; Bool) &rarr; [a] &rarr; Bool
 
@@ -120,7 +135,7 @@ sum([1, 2, 3, 4, 5])
 ```
 
 
-### Arrays.foldl1
+### Arrays.foldl1 : (a &rarr; a &rarr; a) &rarr; [a] &rarr; a
 
 Same as foldl, except the first value of the array is taken to be the
 initial accumulator value.
@@ -144,7 +159,7 @@ product([])
 ```
 
 
-### Arrays.foldlBind : [* &rarr; [*]] &rarr; [*] &rarr; [*]
+### Arrays.foldlBind : [? &rarr; [?]] &rarr; [?] &rarr; [?]
 
 Folded monadic bind, for sequencing binds.
 
@@ -181,7 +196,7 @@ sum([1, 2, 3, 4, 5])
 ```
 
 
-### Arrays.foldr1
+### Arrays.foldr1 : (a &rarr; a &rarr; a) &rarr; [a] &rarr; a
 
 Same as foldr, except the last value of the array is taken to be the
 initial accumulator value.
@@ -205,7 +220,7 @@ product([])
 ```
 
 
-### Arrays.foldrBind
+### Arrays.foldrBind : [? &rarr; [?]] &rarr; [?] &rarr; [?]
 
 Same as foldlBind, except folds from the right instead of the left.
 
